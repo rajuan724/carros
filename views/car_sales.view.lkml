@@ -64,10 +64,7 @@ view: car_sales {
           ELSE ROUND(${price} * (1 - 0.004 * (2022 - ${production_year})))
         END ;;
   }
-  dimension: price_2022 {
-    type: number
-    sql:${TABLE}.car_sales_price_2022 ;;
-  }
+
   dimension: car_sales_price_2023 {
     type: number
     sql:CASE
@@ -91,17 +88,14 @@ view: car_sales {
         END ;;
   }
   parameter: filtro {
-    type: unquoted
+    type: string
     allowed_value: {
       label: "car_salprice"
       value: "price"
     }
     allowed_value: {
       label: "1 Año"
-      value: "${price} *
-            (1 - 0.005 * (2024 - ${production_year})) *
-            (1 - 0.001 * (${mileage_km} / 20000)) *
-            (1 + 0.0001 * (${power_hp} / 100)))"
+      value: "car_sales_price_2022"
     }
     allowed_value: {
       label: "2 Año"
@@ -132,33 +126,8 @@ view: car_sales {
     type: string
     sql: ${TABLE}.Vehicle_model ;;
   }
-  parameter: co2_increment {
-    type: number
-    allowed_value: {
-      label: "0.05"
-      value: "0.05"
-    }
-    allowed_value: {
-      label: "0.10"
-      value: "0.10"
-    }
-    allowed_value: {
-      label: "0.15"
-      value: "0.15"
-    }
-    default_value: "0.1"
-  }
-
-  measure: emission_co2_g_km {
-    type: number
-    sql: ROUND(100 + (${co2_increment} * ${displacement_cm3})) ;;
-  }
   measure: count {
     type: count
-  }
-  measure: avg_prices {
-    type: average
-    sql: ${TABLE}.{% parameter filtro %};;
   }
   measure: avg_price {
     type: average
@@ -166,7 +135,7 @@ view: car_sales {
   }
   measure: avg_price_2022 {
     type: average
-    sql: ${car_sales_price_2022} ;;
+    sql: ${car_sales_price_2022};;
   }
   measure: avg_price_2023 {
     type: average
@@ -175,6 +144,16 @@ view: car_sales {
   measure: avg_price_2024 {
     type: average
     sql: ${car_sales_price_2024}  ;;
+  }
+  measure: dynamic_price {
+    type: number
+    sql: CASE
+          WHEN {% if filtro._parameter_value == "'price'" %} TRUE {% else %} FALSE {% endif %} THEN ${avg_price}
+          WHEN {% if filtro._parameter_value == "'car_sales_price_2022'" %} TRUE {% else %} FALSE {% endif %} THEN ${avg_price_2022}
+          WHEN {% if filtro._parameter_value == "'car_sales_price_2023'" %} TRUE {% else %} FALSE {% endif %} THEN ${avg_price_2023}
+          WHEN {% if filtro._parameter_value == "'car_sales_price_2024'" %} TRUE {% else %} FALSE {% endif %} THEN ${avg_price_2024}
+          else null
+          END ;;
   }
   measure: avg_co2_emissions {
     type: average
