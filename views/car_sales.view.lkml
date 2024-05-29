@@ -64,6 +64,10 @@ view: car_sales {
           ELSE ROUND(${price} * (1 - 0.004 * (2022 - ${production_year})))
         END ;;
   }
+  dimension: price_2022 {
+    type: number
+    sql:${TABLE}.car_sales_price_2022 ;;
+  }
   dimension: car_sales_price_2023 {
     type: number
     sql:CASE
@@ -94,7 +98,10 @@ view: car_sales {
     }
     allowed_value: {
       label: "1 Año"
-      value: "car_sales_price_2022"
+      value: "${price} *
+            (1 - 0.005 * (2024 - ${production_year})) *
+            (1 - 0.001 * (${mileage_km} / 20000)) *
+            (1 + 0.0001 * (${power_hp} / 100)))"
     }
     allowed_value: {
       label: "2 Año"
@@ -124,6 +131,27 @@ view: car_sales {
   dimension: vehicle_model {
     type: string
     sql: ${TABLE}.Vehicle_model ;;
+  }
+  parameter: co2_increment {
+    type: number
+    allowed_value: {
+      label: "0.05"
+      value: "0.05"
+    }
+    allowed_value: {
+      label: "0.10"
+      value: "0.10"
+    }
+    allowed_value: {
+      label: "0.15"
+      value: "0.15"
+    }
+    default_value: "0.1"
+  }
+
+  measure: emission_co2_g_km {
+    type: number
+    sql: ROUND(100 + (${co2_increment} * ${displacement_cm3})) ;;
   }
   measure: count {
     type: count
