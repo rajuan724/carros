@@ -224,4 +224,8 @@ view: car_sales {
           else null
           END ;;
   }
+  measure: avg_displacement {
+    type: average
+    sql: ${displacement_cm3};;
+  }
 }
