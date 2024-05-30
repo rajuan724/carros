@@ -11,7 +11,7 @@ view: car_sales {
           WHEN ${fuel_type} <> "Electric" THEN
             ROUND(${co2_emissions} *
             (1 + 0.003 * (${displacement_cm3} / 1000)) *
-            (1 - 0.00001 * (2024 - ${production_year}))+
+            (1 - 0.00001 * (2022 - ${production_year}))+
             (0.02 * ${power_hp}))
           ELSE ROUND(${co2_emissions}+(0.02 * ${power_hp}))
         END ;;
@@ -22,7 +22,7 @@ view: car_sales {
           WHEN ${fuel_type} <> "Electric" THEN
             ROUND(${co2_emissions} *
             (1 + 0.003 * (${displacement_cm3} / 1000)) *
-            (1 - 0.00001 * (2025 - ${production_year}))+
+            (1 - 0.00001 * (2023 - ${production_year}))+
             (0.035 * ${power_hp}))
           ELSE ROUND(${co2_emissions}+(0.035 * ${power_hp}))
         END ;;
@@ -33,7 +33,7 @@ view: car_sales {
           WHEN ${fuel_type} <> "Electric" THEN
             ROUND(${co2_emissions} *
             (1 + 0.003 * (${displacement_cm3} / 1000)) *
-            (1 - 0.00001 * (2026 - ${production_year}))+
+            (1 - 0.00001 * (2024 - ${production_year}))+
             (0.065 * ${power_hp}))
           ELSE ROUND(${co2_emissions}+(0.065 * ${power_hp}))
         END ;;
@@ -91,10 +91,10 @@ view: car_sales {
     sql:CASE
           WHEN ${condition} = "Used" THEN
             ROUND(${price} *
-            (1 - 0.005 * (2024 - ${production_year})) *
+            (1 - 0.005 * (2022 - ${production_year})) *
             (1 - 0.001 * (${mileage_km} / 25000)) *
             (1 + 0.0001 * (${power_hp} / 100)))
-          ELSE ROUND(${price} * (1 - 0.004 * (2024 - ${production_year})))
+          ELSE ROUND(${price} * (1 - 0.004 * (2022 - ${production_year})))
         END ;;
   }
 
@@ -103,10 +103,10 @@ view: car_sales {
     sql:CASE
           WHEN ${condition} = "Used" THEN
             ROUND(${price} *
-            (1 - 0.005 * (2025 - ${production_year})) *
+            (1 - 0.005 * (2023 - ${production_year})) *
             (1 - 0.001 * (${mileage_km} / 20000)) *
             (1 + 0.0001 * (${power_hp} / 100)))
-          ELSE ROUND(${price} * (1 - 0.004 * (2025 - ${production_year})))
+          ELSE ROUND(${price} * (1 - 0.004 * (2023 - ${production_year})))
         END ;;
   }
   dimension: car_sales_price_2024 {
@@ -114,10 +114,10 @@ view: car_sales {
     sql:CASE
           WHEN ${condition} = "Used" THEN
             ROUND(${price} *
-            (1 - 0.005 * (2026 - ${production_year})) *
+            (1 - 0.005 * (2024 - ${production_year})) *
             (1 - 0.001 * (${mileage_km} / 10000)) *
             (1 + 0.0001 * (${power_hp} / 100)))
-          ELSE ROUND(${price} * (1 - 0.0045 * (2026 - ${production_year})))
+          ELSE ROUND(${price} * (1 - 0.0045 * (2024 - ${production_year})))
         END ;;
   }
   parameter: filtro {
