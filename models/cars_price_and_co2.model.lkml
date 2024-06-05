@@ -11,6 +11,7 @@ datagroup: cars_price_and_co2_default_datagroup {
 persist_with: cars_price_and_co2_default_datagroup
 
 explore: opt2024 {}
+explore: opt2026 {}
 explore: car_sales {
   join: opt2024 {
     type: left_outer
