@@ -10,5 +10,11 @@ datagroup: cars_price_and_co2_default_datagroup {
 
 persist_with: cars_price_and_co2_default_datagroup
 
-explore: car_sales {}
-
+explore: opt2024 {}
+explore: car_sales {
+  join: opt2024 {
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${car_sales.index} = ${opt2024.index};;
+  }
+}

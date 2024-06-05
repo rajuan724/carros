@@ -229,4 +229,24 @@ view: car_sales {
     type: average
     sql: ${displacement_cm3};;
   }
+
+  measure: total_price {
+    type: sum
+    sql: ${TABLE}.Price ;;
+  }
+
+  measure: total_co2_emissions {
+    type: sum
+    sql: ${TABLE}.CO2_emissions ;;
+  }
+
+  measure: count_vehicles {
+    type: count_distinct
+    sql: ${TABLE}.Index ;;
+  }
+
+  measure: optimal_allocation {
+    type: number
+    sql: ${total_price} / ${total_co2_emissions} ;;
+  }
 }
