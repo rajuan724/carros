@@ -4,6 +4,12 @@ view: opt2024 {
     sql: WITH manager_vehicles AS (
           SELECT
               Index,
+              Condition,
+              Production_year,
+              Fuel_type,
+              Transmission,
+              Doors_number,
+              Colour,
               price,
               co2_emissions,
               power_hp,
@@ -12,13 +18,19 @@ view: opt2024 {
               'Manager' AS user_type,
               ROW_NUMBER() OVER (PARTITION BY vehicle_brand ORDER BY co2_emissions) AS rn
           FROM `analitica-demos.cars.car_sales_`
-          WHERE vehicle_brand IN ('BMW', 'Audi', 'Mercedes Benz') and year=2024
+          WHERE vehicle_brand IN ('BMW', 'Audi', 'Mercedes-Benz') and year={% parameter years %}
           ORDER BY co2_emissions
           LIMIT 40
       ),
       operator_vehicles AS (
           SELECT
               Index,
+              Condition,
+              Production_year,
+              Fuel_type,
+              Transmission,
+              Doors_number,
+              Colour,
               price,
               co2_emissions,
               power_hp,
@@ -27,8 +39,8 @@ view: opt2024 {
               'Operator' AS user_type,
               ROW_NUMBER() OVER (PARTITION BY vehicle_brand ORDER BY co2_emissions) AS rn
           FROM `analitica-demos.cars.car_sales_`
-          WHERE power_hp > 200
-            AND Index NOT IN (SELECT Index FROM manager_vehicles) and year=2024
+          WHERE power_hp > {% parameter PH %} and vehicle_brand NOT IN ('BMW', 'Audi', 'Mercedes-Benz','Rolls-Royce','Lamborghini','Bentley','Ferrari','RAM','Alpine','Lotus','Porsche','Maserati','Cupra','Land Rover','GMC','Jaguar','DFSK')
+            AND Index NOT IN (SELECT Index FROM manager_vehicles) and year= {% parameter years %}
           ORDER BY co2_emissions
           LIMIT 120
       ),
@@ -40,6 +52,12 @@ view: opt2024 {
       ranked_vehicles AS (
           SELECT
               Index,
+              Condition,
+              Production_year,
+              Fuel_type,
+              Transmission,
+              Doors_number,
+              Colour,
               price,
               co2_emissions,
               power_hp,
@@ -57,6 +75,12 @@ view: opt2024 {
       )
       SELECT
           Index,
+          Condition,
+          Production_year,
+          Fuel_type,
+          Transmission,
+          Doors_number,
+          Colour,
           vehicle_brand,
           vehicle_model,
           price,
@@ -65,10 +89,24 @@ view: opt2024 {
           user_type,
           accumulated_price
       FROM accumulated_vehicles
-      WHERE accumulated_price <= 10000000
+      WHERE accumulated_price <= {% parameter max_price %}
       ORDER BY overall_rn ;;
   }
-
+  parameter: max_price {
+    type: number
+    label: "Maximum Accumulated Price"
+    default_value: "10000000"
+  }
+  parameter: years {
+    type: number
+    label: "año consulta"
+    default_value: "2024"
+  }
+  parameter: PH {
+    type: number
+    label: "PH consulta"
+    default_value: "150"
+  }
   measure: count {
     type: count
     drill_fields: [detail*]
@@ -76,15 +114,22 @@ view: opt2024 {
   measure: money {
     type: max
     sql: ${accumulated_price} ;;
+    value_format: "$#,##0"
   }
   measure: total_co2 {
     type: sum
     sql: ${co2_emissions} ;;
   }
+  dimension: price_consulta{
+    type: number
+    sql: {% parameter max_price %} ;;
+    value_format: "$#,##0"
+  }
   dimension: index {
     primary_key: yes
     type: number
     sql: ${TABLE}.Index ;;
+    value_format: "0"
   }
 
   dimension: vehicle_brand {
@@ -100,6 +145,7 @@ view: opt2024 {
   dimension: price {
     type: number
     sql: ${TABLE}.price ;;
+    value_format: "$#,##0"
   }
 
   dimension: co2_emissions {
@@ -121,7 +167,31 @@ view: opt2024 {
     type: number
     sql: ${TABLE}.accumulated_price ;;
   }
-
+  dimension: condition {
+    type: string
+    sql: ${TABLE}.Condition ;;
+  }
+  dimension: production_year {
+    type: number
+    sql: ${TABLE}.Production_year ;;
+    value_format: "0"
+  }
+  dimension: fuel_type {
+    type: string
+    sql: ${TABLE}.Fuel_type ;;
+  }
+  dimension: transmission {
+    type: string
+    sql: ${TABLE}.Transmission ;;
+  }
+  dimension: doors_number {
+    type: number
+    sql: ${TABLE}.Doors_number ;;
+  }
+  dimension: colour {
+    type: string
+    sql: ${TABLE}.Colour ;;
+  }
   set: detail {
     fields: [
         index,

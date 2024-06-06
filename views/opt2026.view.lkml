@@ -11,7 +11,7 @@ view: opt2026 {
               'Manager' AS user_type,
               ROW_NUMBER() OVER (PARTITION BY vehicle_brand ORDER BY co2_emissions) AS rn
           FROM `analitica-demos.cars.car_sales_`
-          WHERE vehicle_brand IN ('BMW', 'Audi', 'Mercedes Benz') and year=2026
+          WHERE vehicle_brand IN ('BMW', 'Audi', 'Mercedes-Benz') and year=2027
           ORDER BY co2_emissions
           LIMIT 40
       ),
@@ -26,8 +26,8 @@ view: opt2026 {
               'Operator' AS user_type,
               ROW_NUMBER() OVER (PARTITION BY vehicle_brand ORDER BY co2_emissions) AS rn
           FROM `analitica-demos.cars.car_sales_`
-          WHERE power_hp > 200
-            AND Index NOT IN (SELECT Index FROM manager_vehicles) and year=2026
+          WHERE power_hp > 300 and vehicle_brand NOT IN ('BMW', 'Audi', 'Mercedes-Benz','Rolls-Royce','Lamborghini','Bentley','Ferrari','RAM','Alpine','Lotus','Porsche','Maserati','Cupra','Land Rover','GMC','Jaguar','DFSK')
+            AND Index NOT IN (SELECT Index FROM manager_vehicles) and year=2027
           ORDER BY co2_emissions
           LIMIT 120
       ),
