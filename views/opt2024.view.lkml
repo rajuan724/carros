@@ -120,6 +120,10 @@ view: opt2024 {
     type: sum
     sql: ${co2_emissions} ;;
   }
+  measure: average_co2 {
+    type: average
+    sql: ${co2_emissions} ;;
+  }
   dimension: price_consulta{
     type: number
     sql: {% parameter max_price %} ;;
@@ -200,8 +204,7 @@ view: opt2024 {
   price,
   co2_emissions,
   power_hp,
-  user_type,
-  accumulated_price
+  user_type
     ]
   }
 }
