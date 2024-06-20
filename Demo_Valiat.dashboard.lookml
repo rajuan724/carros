@@ -1,6 +1,6 @@
 ---
 - dashboard: valiat
-  title: Valiat
+  title: Demo Valiat
   layout: newspaper
   preferred_viewer: dashboards-next
   description: ''
