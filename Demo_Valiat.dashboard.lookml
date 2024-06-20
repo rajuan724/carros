@@ -1,6 +1,6 @@
 ---
-- dashboard: demo_valiat
-  title: Demo Valiat
+- dashboard: valiat
+  title: Valiat
   layout: newspaper
   preferred_viewer: dashboards-next
   description: ''
@@ -570,7 +570,7 @@
     height: 7
   - type: button
     name: button_72
-    rich_content_json: '{"text":"Planteamiento del problema","description":"","newTab":false,"alignment":"center","size":"medium","style":"FILLED","color":"#cb5761"}'
+    rich_content_json: '{"text":"Planteamiento del problema","description":"","newTab":false,"alignment":"center","size":"medium","style":"FILLED","color":"#cb5761","href":"https://prociberneticadev.cloud.looker.com/dashboards/10"}'
     row: 6
     col: 0
     width: 7
