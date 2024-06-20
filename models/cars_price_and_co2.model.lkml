@@ -2,6 +2,7 @@ connection: "cars"
 
 # include all the views
 include: "/views/**/*.view.lkml"
+include: "/**/*.dashboard"
 
 datagroup: cars_price_and_co2_default_datagroup {
   # sql_trigger: SELECT MAX(id) FROM etl_log;;
