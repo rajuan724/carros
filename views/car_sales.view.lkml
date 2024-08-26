@@ -2,6 +2,7 @@ view: car_sales {
   sql_table_name: `cars.car_sales` ;;
 
   dimension: co2_emissions {
+    label: "emesiones de co2"
     type: number
     sql: ${TABLE}.CO2_emissions ;;
   }
@@ -83,6 +84,7 @@ view: car_sales {
     sql: ${TABLE}.Power_HP ;;
   }
   dimension: price {
+    label: "precio del vehiculo"
     type: number
     sql: ${TABLE}.Price ;;
   }
@@ -163,6 +165,7 @@ view: car_sales {
     sql: ${TABLE}.Type ;;
   }
   dimension: vehicle_brand {
+    label: "Marca del vehiculo"
     type: string
     sql: ${TABLE}.Vehicle_brand ;;
   }
